@@ -21,6 +21,18 @@ And use it on your controllers.
       permalink :title, :slug
     end
 
+So now you can find your posts with:
+
+    class Posts < ApplicationController
+
+      def show
+        @post = Post.find_by_permalink_and_status!(params[:id])
+      end
+
+    end
+
+NOTE: `Model.find_by_something!` is a Rails Edge (2.2) new feature.
+
 == About the Author
 
 Francesc Esplugas <hello@francescesplugas.com>
