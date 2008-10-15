@@ -33,4 +33,9 @@ class TestString < Test::Unit::TestCase
     assert_equal "uuu", "ùúü".normalize
   end
 
+  def test_transliteration
+    assert_equal "", "ß".normalize
+    assert_equal "", "æ".normalize
+  end
+
 end
