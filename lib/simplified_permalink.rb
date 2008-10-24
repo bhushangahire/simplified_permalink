@@ -1,3 +1,5 @@
+require 'simplified_permalink/string'
+
 module SimplifiedPermalink
 
   def self.included(base)
