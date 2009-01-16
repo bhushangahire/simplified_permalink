@@ -1,5 +1,3 @@
-require 'simplified_permalink/string'
-
 module SimplifiedPermalink
 
   def self.included(base)
@@ -23,7 +21,7 @@ module SimplifiedPermalink
     def permalink(field_name, permalink_field_name = 'permalink')
       before_save do |record|
         unless record.send(field_name).blank?
-          record.send "#{permalink_field_name}=", record.send(field_name).to_url
+          record.send "#{permalink_field_name}=", record.send(field_name).parameterize
         end
       end
     end
