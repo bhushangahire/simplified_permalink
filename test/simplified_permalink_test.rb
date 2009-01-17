@@ -24,6 +24,14 @@ def teardown_db
   end
 end
 
+class String
+
+  def parameterize
+    self.gsub(/\W+/, ' ').strip.gsub(/\ +/, '-').downcase
+  end
+
+end
+
 class Post < ActiveRecord::Base
   permalink :title_to_permalink
   permalink :title_to_slug, :slug
@@ -40,15 +48,13 @@ class SimplifiedPermalinkTest < Test::Unit::TestCase
   end
 
   def test_should_convert_title_to_permalink_to_permalink
-    flunk "test_should_convert_title_to_permalink_to_permalink"
-    # post = Post.create :title_to_permalink => "Chunky Bacon"
-    # assert_equal "chunky-bacon", post.permalink
+    post = Post.create :title_to_permalink => "Chunky Bacon"
+    assert_equal "chunky-bacon", post.permalink
   end
 
   def test_should_convert_title_to_slug_to_slug
-    flunk "test_should_convert_title_to_slug_to_slug"
-    # post = Post.create :title_to_slug => "Chunky Bacon"
-    # assert_equal "chunky-bacon", post.slug
+    post = Post.create :title_to_slug => "Chunky Bacon"
+    assert_equal "chunky-bacon", post.slug
   end
 
 end
