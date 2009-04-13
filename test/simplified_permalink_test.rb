@@ -9,9 +9,8 @@ def setup_db
   silence_stream(STDOUT) do
     ActiveRecord::Schema.define(:version => 1) do
       create_table :posts do |t|
-        t.string :title_to_permalink
+        t.string :title
         t.string :permalink
-        t.string :title_to_slug
         t.string :slug
       end
     end
@@ -27,14 +26,17 @@ end
 class String
 
   def parameterize
-    self.gsub(/\W+/, ' ').strip.gsub(/\ +/, '-').downcase
+    downcase.gsub(/[^a-z0-9]+/i, '-')
+  end
+
+  def normalize
   end
 
 end
 
 class Post < ActiveRecord::Base
-  permalink :title_to_permalink
-  permalink :title_to_slug, :slug
+  permalink :title
+  permalink :title, :slug
 end
 
 class SimplifiedPermalinkTest < Test::Unit::TestCase
@@ -47,14 +49,19 @@ class SimplifiedPermalinkTest < Test::Unit::TestCase
     teardown_db
   end
 
-  def test_should_convert_title_to_permalink_to_permalink
-    post = Post.create :title_to_permalink => "Chunky Bacon"
+  def test_should_generate_permalink
+    post = Post.create :title => "Chunky Bacon"
     assert_equal "chunky-bacon", post.permalink
   end
 
-  def test_should_convert_title_to_slug_to_slug
-    post = Post.create :title_to_slug => "Chunky Bacon"
+  def test_should_generate_permalink_on_slug
+    post = Post.create :title => "Chunky Bacon"
     assert_equal "chunky-bacon", post.slug
+  end
+
+  def test_should_allow_to_define_custom_permalink
+    post = Post.create :title => "Chunky Bacon", :permalink => "chunky-bacon-with-cheese"
+    assert_equal "chunky-bacon-with-cheese", post.permalink
   end
 
 end
